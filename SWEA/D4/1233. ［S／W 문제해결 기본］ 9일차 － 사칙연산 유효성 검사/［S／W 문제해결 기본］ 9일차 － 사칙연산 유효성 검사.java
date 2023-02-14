@@ -15,13 +15,17 @@ public class Solution {
 				st = new StringTokenizer(br.readLine());
 				st.nextToken();
 				char input = st.nextToken().charAt(0);
-				if(st.hasMoreTokens()) {
-					if(input >= '0' && input <= '9') {
-						ans = 0;
+				if(st.hasMoreTokens()) {  // 자식 노드가 있을 때
+					if(input >= '0' && input <= '9') {  // 숫자라면
+						ans = 0;  // false
 					} 
-				} else {
-					if(input < '0' || input > '9') {
+					st.nextToken();
+					if(!st.hasMoreTokens()) {
 						ans = 0;
+					}
+				} else {  // 자식 노드가 없을 때
+					if(input < '0' || input > '9') { // 연산이라면
+						ans = 0;  // false
 					}
 				}
 			}
