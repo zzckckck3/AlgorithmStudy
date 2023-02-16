@@ -27,8 +27,8 @@ public class Main {
 			}
 		}
 		
-		for (int i = 0; i < 1000; i++) {
-			for (int j = 0; j < 1000; j++) {
+		for (int i = 0; i < 101; i++) {
+			for (int j = 0; j < 101; j++) {
 				ans[grid[i][j]]++;			
 			}
 		}
