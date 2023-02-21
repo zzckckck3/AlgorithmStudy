@@ -35,7 +35,7 @@ public class Main {
 				sum += win[i] + draw[i] + lose[i]; 
 			}
 			canCup = false;
-			if (sum == 30) { // 경기 수 총 합이 15가 아니라면 break;
+			if (sum == 30 && winSum == loseSum && (drawSum % 2) == 0) {
 				dfs(0, 0, 1); 
 			} 
 //			else if(winSum != loseSum) {
