@@ -4,10 +4,6 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class Main {
-	static int sum = 0;
-	static int winSum = 0;
-	static int loseSum = 0;
-	static int drawSum = 0;
 	static int[] win;
 	static int[] draw;
 	static int[] lose;
@@ -24,10 +20,10 @@ public class Main {
 			lose = new int[6];
 			
 			st = new StringTokenizer(br.readLine());
-			sum = 0;
-			winSum = 0;
-			loseSum = 0;
-			drawSum = 0;
+			int sum = 0;
+			int winSum = 0;
+			int loseSum = 0;
+			int drawSum = 0;
 			for (int i = 0; i < 6; i++) {
 				winSum += win[i] = Integer.parseInt(st.nextToken());
                 drawSum += draw[i] = Integer.parseInt(st.nextToken());
@@ -38,13 +34,6 @@ public class Main {
 			if (sum == 30 && winSum == loseSum && (drawSum % 2) == 0) {
 				dfs(0, 0, 1); 
 			} 
-//			else if(winSum != loseSum) {
-//				System.out.print("0 ");
-//				break;
-//			} else if((drawSum % 2) != 0) {
-//				System.out.print("0 ");
-//				break;
-//			}
 			
 			if(canCup) {
 				System.out.print("1 ");
