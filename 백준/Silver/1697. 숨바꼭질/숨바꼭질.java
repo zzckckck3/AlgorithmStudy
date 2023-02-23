@@ -8,30 +8,26 @@ import java.util.StringTokenizer;
 
 public class Main
 {
-	public static int a;
-	public static int b;
-	
-	public static int visited[] = new int[1000000];
+	static int a;
+	static int b;
+	static Queue<Integer> queue = new LinkedList<Integer>();
+	static int visited[] = new int[1000000];
 	
 	// X-1, X+1	// X*2
 	public static void main(String[] args) throws IOException
 	{
-		BufferedReader builder = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer tokenizer = new StringTokenizer(builder.readLine());
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		
-		a = Integer.valueOf(tokenizer.nextToken());
-		b = Integer.valueOf(tokenizer.nextToken());
+		a = Integer.parseInt(st.nextToken());
+		b = Integer.parseInt(st.nextToken());
 		
-		int result = bfs(a);
-		
-		System.out.println(result);
+		System.out.println(bfs(a));
 	}
 
 	private static int bfs(int num)
 	{
-		Queue<Integer> queue = new LinkedList<Integer>();
-		
-		queue.add(num);
+		queue.offer(num);
 		int firstIndex = num;
 		int n = 0;
 		visited[firstIndex] = 1;
