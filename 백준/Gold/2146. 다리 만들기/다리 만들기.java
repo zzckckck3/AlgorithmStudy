@@ -18,21 +18,20 @@ public class Main {
         }
     }
 
-
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
+        n = Integer.parseInt(br.readLine());
         map = new int[n][n];
         visited = new boolean[n][n];
 
-        // 지도 입력 받기
         for (int i = 0; i < n; i++) {
+        	st = new StringTokenizer(br.readLine());
             for (int j = 0; j < n; j++) {
-                map[i][j] = sc.nextInt();
+                map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
 
-        // 각 섬에 번호 붙이기
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < n; j++) {
                 if (map[i][j] == 1 && !visited[i][j]) {
@@ -41,46 +40,45 @@ public class Main {
             }
         }
 
-        // 각 섬들의 거리 구하기
         int ans = Integer.MAX_VALUE;
         for (int k = 1; k < cnt; k++) {
-            Queue<Node> q = new LinkedList<>();
+            Queue<Node> queue = new LinkedList<>();
             int[][] dist = new int[n][n];
             for (int i = 0; i < n; i++) {
                 Arrays.fill(dist[i], -1);
             }
 
-            // k번 섬의 위치를 큐에 넣고 dist 배열 초기화
+
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                     if (map[i][j] == k) {
-                        q.add(new Node(i, j));
+                        queue.add(new Node(i, j));
                         dist[i][j] = 0;
                     }
                 }
             }
 
-            // k번 섬과 다른 섬을 연결하는 다리의 길이 구하기
-            while (!q.isEmpty()) {
-                Node node = q.poll();
+            while (!queue.isEmpty()) {
+                Node node = queue.poll();
                 int x = node.x;
                 int y = node.y;
                 for (int i = 0; i < 4; i++) {
                     int nx = x + dx[i];
                     int ny = y + dy[i];
                     if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
-                    if (dist[nx][ny] != -1) continue;
+                    if (dist[nx][ny] != -1) {
+                    	continue;
+                    }
                     if (map[nx][ny] != 0 && map[nx][ny] != k) {
                         ans = Math.min(ans, dist[x][y] + dist[nx][ny]);
                         break;
                     }
                     dist[nx][ny] = dist[x][y] + 1;
-                    q.add(new Node(nx, ny));
+                    queue.add(new Node(nx, ny));
                 }
             }
         }
 
-        // 최단 다리의 길이 출력
         System.out.println(ans + 1);
     }
 
@@ -90,7 +88,9 @@ public class Main {
         for (int i = 0; i < 4; i++) {
             int nx = x + dx[i];
             int ny = y + dy[i];
-            if (nx < 0 || nx >= n || ny < 0 || ny >= n) continue;
+            if (nx < 0 || nx >= n || ny < 0 || ny >= n) {
+            	continue;
+            }
             if (map[nx][ny] == 1 && !visited[nx][ny]) {
                 dfs(nx, ny, num);
             }
