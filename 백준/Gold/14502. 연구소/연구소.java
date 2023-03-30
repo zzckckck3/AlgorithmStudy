@@ -4,22 +4,23 @@ import java.util.*;
 public class Main {
 	static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 	static StringTokenizer st;
-	static int[][] map, mapClone;
+	static int[][] map, mapCopy;
 	static int N, M, maxNum= 0;
 	static int[] combarr = new int[3];
-	static int[] dx = {-1, 1, 0, 0};
-	static int[] dy = {0, 0, -1, 1};
+	static int[] dr = {-1, 1, 0, 0};
+	static int[] dc = {0, 0, -1, 1};
 	static ArrayList<Pos> safe = new ArrayList<Pos>();
 	static Deque<Pos> virus = new ArrayDeque<Pos>();
 	static int safeCnt = 0;
 	static boolean flag = false;
-	private static class Pos{
-		int x;
-		int y;
+	
+	static class Pos{
+		int row;
+		int col;
 		
-		public Pos(int x, int y) {
-			this.x = x;
-			this.y = y;
+		public Pos(int row, int col) {
+			this.row = row;
+			this.col = col;
 		}
 	}
 	
@@ -29,45 +30,46 @@ public class Main {
 		M = Integer.parseInt(st.nextToken());
 		
 		map = new int[N][M];
-		mapClone = new int[N][M];
-		int value;
-		for(int i=0; i<N; i++) {
+		mapCopy = new int[N][M];
+		
+		for(int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			for(int j=0; j<M; j++) {
-				value = Integer.parseInt(st.nextToken());
-				map[i][j] = value;
-				mapClone[i][j] = value;
+			for(int j = 0; j < M; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+				mapCopy[i][j] = map[i][j];
+				
 				if(map[i][j] == 0) {
 					safe.add(new Pos(i, j));
 				}
 			}
 		}
-		combination(0, 0);
+		
+		comb(0, 0);
 		System.out.println(maxNum);
 		
 	}
 
-	private static void combination(int cnt, int start) {
+	private static void comb(int cnt, int start) {
 		if(cnt == 3) {
-			mapCopy();
+			mapInit();
 			for(int i: combarr) {
-				map[safe.get(i).x][safe.get(i).y]= 1; 
+				map[safe.get(i).row][safe.get(i).col]= 1; 
 			}
-			spreadVirus();
+			spread();
 			maxNum = Math.max(maxNum, cntZero());
 			return;
 		}
 
-		for(int i= start; i< safe.size(); i++) {
+		for(int i = start; i < safe.size(); i++) {
 			combarr[cnt] = i;
-			combination(cnt+1, i+1);
+			comb(cnt+1, i+1);
 		}
 	}
 
-	private static void mapCopy() {
-		for(int i=0; i<N; i++) {
-			for(int j=0; j<M; j++) {
-				map[i][j] = mapClone[i][j];
+	private static void mapInit() {
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < M; j++) {
+				map[i][j] = mapCopy[i][j];
 				if(map[i][j] == 2) {
 					virus.add(new Pos(i, j));
 				}
@@ -75,17 +77,19 @@ public class Main {
 		}
 	}
 	
-	private static void spreadVirus() {
-		int nx, ny;
+	private static void spread() {
+		int nr, nc;
 		Pos pos;
 		while(!virus.isEmpty()) {
 			pos = virus.poll();
-			for(int i=0; i<4; i++) {
-				nx = pos.x + dx[i];
-				ny = pos.y + dy[i];
-				if(!isRange(nx, ny) || map[nx][ny] > 0) continue;
-				map[nx][ny] = 2;
-				virus.add(new Pos(nx, ny));
+			for(int i = 0; i < 4;i++) {
+				nr = pos.row + dr[i];
+				nc = pos.col + dc[i];
+				if(!isRange(nr, nc) || map[nr][nc] > 0) {
+					continue;
+				}
+				map[nr][nc] = 2;
+				virus.add(new Pos(nr, nc));
 			}
 		}
 	}
@@ -95,9 +99,9 @@ public class Main {
 	}
 	
 	private static int cntZero() {
-		int cnt =0;
-		for(int i=0; i<N; i++) {
-			for(int j=0; j<M; j++) {
+		int cnt = 0;
+		for(int i = 0; i < N; i++) {
+			for(int j = 0; j < M; j++) {
 				if(map[i][j] == 0)
 					cnt++;
 			}
